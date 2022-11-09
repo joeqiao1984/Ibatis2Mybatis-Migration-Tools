@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="com.test">
+    <sql id="abatorgenerated_Example_Where_Clause">
+        <iterate conjunction="or" prepend="where" property="oredCriteria" removeFirstPrepend="iterate">
+            <isEqual compareValue="true" property="oredCriteria[].valid">
+                (
+                <iterate conjunction="and" prepend="and" property="oredCriteria[].criteriaWithoutValue">
+                    $oredCriteria[].criteriaWithoutValue[]$
+                </iterate>
+                <iterate conjunction="and" prepend="and" property="oredCriteria[].criteriaWithSingleValue">
+                    $oredCriteria[].criteriaWithSingleValue[].condition$
+                    #oredCriteria[].criteriaWithSingleValue[].value#
+                </iterate>
+                <iterate conjunction="and" prepend="and" property="oredCriteria[].criteriaWithListValue">
+                    $oredCriteria[].criteriaWithListValue[].condition$
+                    <iterate close=")" conjunction="," open="(" property="oredCriteria[].criteriaWithListValue[].values">
+                        #oredCriteria[].criteriaWithListValue[].values[]#
+                    </iterate>
+                </iterate>
+                <iterate conjunction="and" prepend="and" property="oredCriteria[].criteriaWithBetweenValue">
+                    $oredCriteria[].criteriaWithBetweenValue[].condition$
+                    #oredCriteria[].criteriaWithBetweenValue[].values[0]# and
+                    $oredCriteria[].criteriaWithBetweenValue[].values[1]$
+                </iterate>
+                )
+            </isEqual>
+        </iterate>
+    </sql>
+</sqlMap>

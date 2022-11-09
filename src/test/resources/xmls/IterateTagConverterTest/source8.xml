@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="com.test">
+    <select id="findEmpeInTpLblList" parameterClass="java.util.List"
+            resultClass="com.test.po">
+        select test from test_Table
+        where e.empid = t.empid
+        and t.lbl_ecd = '20100'
+        and e.usr_tpcd = '11'
+        and t.lbl_s_val in
+        <isEqual>
+            $inList[]$
+        </isEqual>
+    </select>
+</sqlMap>

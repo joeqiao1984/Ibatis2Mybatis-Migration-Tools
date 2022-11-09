@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="com.test">
+    <update id="pro_dayEndChargeDataPrepare" parameterMap="pro_dayEndChargeDataPrepare_map" statementType="CALLABLE">
+        {call DayEndChargeDataPrepare(?,?,?,?,?,?)}
+    </update>
+    <parameterMap class="java.util.HashMap" id="pro_dayEndChargeDataPrepare_map">
+        <parameter property="id" javaType="String" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="unit_id" javaType="String" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="prj_id" javaType="String" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="txn_dt_start" javaType="String" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="txn_dt_end" javaType="String" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="backCursor" javaType="java.sql.ResultSet"
+                   jdbcType="ORACLECURSOR" mode="OUT" resultMap="prj_total_data"/>
+    </parameterMap>
+</sqlMap>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="com.test">
+    <resultMap id="findResult" class="HashMap">
+        <result property="id" column="id" javaType="int" />
+        <result property="name" column="name" javaType="String" />
+    </resultMap>
+    <insert id="find" parameterClass="long">
+        insert into demo (id
+        <dynamic prepend=",">
+            <isNotEmpty property="name" prepend=",">name</isNotEmpty>
+            ) values
+        </dynamic>
+         (#id#
+        <dynamic prepend=",">
+            <isNotEmpty property="name" prepend=",">#name#</isNotEmpty>
+        </dynamic>
+        )
+    </insert>
+</sqlMap>

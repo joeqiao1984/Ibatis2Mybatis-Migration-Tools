@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="com.test">
+    <typeAlias alias="taskinfo" type="com.test.openframework.asf.model.TaskInstancePo"/>
+    <typeAlias alias="taskdata" type="com.test.openframework.asf.model.TaskInstanceDataPo"/>
+    <typeAlias alias="taskdefineinfo" type="com.test.openframework.asf.model.TaskDefinePo"/>
+    <typeAlias alias="taskdefinedata" type="com.test.openframework.asf.model.TaskDefineDataPo"/>
+    <resultMap id="indResult" class="HashMap">
+        <result property="id" column="id" javaType="int" />
+        <result property="name" column="name" javaType="String" />
+    </resultMap>
+    <select id="find" resultMap="findResult" parameterClass="long">
+        select * from demo where 1=1
+        <dynamic prepend="and">
+            <isNotEmpty property="id">
+                id = #id#
+            </isNotEmpty>
+        </dynamic>
+    </select>
+</sqlMap>

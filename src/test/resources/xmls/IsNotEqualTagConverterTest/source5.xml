@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="com.test">
+    <select id="find" resultMap="findResult" parameterClass="long">
+        SELECT
+            id,
+            name
+        FROM
+            testTable
+        WHERE
+        <dynamic prepend="and">
+            <isNotEqual property="id" prepend="and" open="(" close=")" removeFirstPrepend="true" compareProperty="name">
+                <![CDATA[id=#id#]]>
+            </isNotEqual>
+        </dynamic>
+    </select>
+</sqlMap>

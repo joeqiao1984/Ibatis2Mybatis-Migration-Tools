@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="com.test">
+    <select id="find" resultMap="findResult" parameterClass="long">
+        SELECT
+        id,
+        name
+        FROM
+        testTable
+        WHERE
+        <dynamic prepend="and">
+            <isNotNull property="id" prepend="and" open="(" close=")" removeFirstPrepend="true">
+                <![CDATA[id=#id#]]>
+                <isNotNull property="name" prepend="and" open="(" close=")">
+                    1 = 1
+                </isNotNull>
+                <![CDATA[order by id]]>
+            </isNotNull>
+        </dynamic>
+    </select>
+</sqlMap>

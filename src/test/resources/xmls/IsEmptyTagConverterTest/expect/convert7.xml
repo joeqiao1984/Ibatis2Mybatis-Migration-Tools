@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="com.test">
+    <select id="find" resultMap="findResult" parameterClass="long">
+        SELECT
+        id,
+        name
+        FROM
+        testTable
+        WHERE
+        <dynamic prepend="and">
+            <if test="id == null or @java.lang.String@valueOf(id).equals('')">
+                <![CDATA[ and ( ]]><![CDATA[id=#id#]]>
+                <trim prefixOverrides="AND|OR">
+                    <if test="name == null or @java.lang.String@valueOf(name).equals('')">
+                        and name=#name#
+                    </if>
+                </trim><![CDATA[ ) ]]>
+            </if>
+        </dynamic>
+    </select>
+</sqlMap>

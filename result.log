@@ -1,0 +1,27 @@
+2022-11-09 16:13:04  WARN c.g.i.c.IsLessThanTagConverter           : 文件testInput中isLessThan标签没有property属性，请检查语句是否合法
+2022-11-09 16:13:04  WARN c.g.i.c.IsLessThanTagConverter           : 文件testInput中isLessThan标签中compareValue、compareProperty属性均不存在，请检查语句是否合法
+2022-11-09 16:13:04  WARN c.g.i.c.IsGreaterEqualTagConverter       : 文件testInput中isGreaterEqual标签没有property属性，请检查语句是否合法
+2022-11-09 16:13:04  WARN c.g.i.c.IsGreaterEqualTagConverter       : 文件testInput中isGreaterEqual标签中compareValue、compareProperty属性均不存在，请检查语句是否合法
+2022-11-09 16:13:04  WARN c.g.i.c.IsEqualTagConverter              : 文件testInput中isEqual标签没有property属性，请检查语句是否合法
+2022-11-09 16:13:04  WARN c.g.i.c.IsPropertyAvailableTagConverter  : 文件testInput中isPropertyAvailable标签没有property属性，请检查语句是否合法
+2022-11-09 16:13:04  WARN c.g.i.c.IsGreaterThanTagConverter        : 文件testInput中isGreaterThan标签没有property属性，请检查语句是否合法
+2022-11-09 16:13:04  WARN c.g.i.c.IsGreaterThanTagConverter        : 文件testInput中isGreaterThan标签中compareValue、compareProperty属性均不存在，请检查语句是否合法
+2022-11-09 16:13:05  WARN c.g.i.c.IsEmptyTagConverter              : 文件testInput中isEmpty标签没有property属性，请检查语句是否合法
+2022-11-09 16:13:05  WARN c.g.i.c.IterateTagConverter              : 文件testInput中<iterate>标签使用了removeFirstPrepend属性，请检查转换后代码是否可以正确执行
+2022-11-09 16:13:05  WARN c.g.i.c.IterateTagConverter              : 文件testInput中存在<iterate>标签中数组通过下标访问的情况，请检查转换后代码是否可以正确执行
+2022-11-09 16:13:05  WARN c.g.i.c.IterateTagConverter              : 文件testInput中<iterate>标签使用了removeFirstPrepend属性，请检查转换后代码是否可以正确执行
+2022-11-09 16:13:05  WARN c.g.i.c.IterateTagConverter              : 文件testInput中sql片段中iterate引用属性找不到对应记录，属性为inList
+2022-11-09 16:13:05  WARN c.g.i.c.IterateTagConverter              : 文件testInput中sql片段中iterate引用属性找不到对应记录，属性为inList
+2022-11-09 16:13:05  WARN c.g.i.c.IterateTagConverter              : 文件testInput中iterate引用属性找不到对应记录，原始property属性为abcd[]
+2022-11-09 16:13:05  WARN c.g.i.c.IterateTagConverter              : 文件testInput中存在<iterate>标签中数组通过下标访问的情况，请检查转换后代码是否可以正确执行
+2022-11-09 16:13:05  WARN c.g.i.c.IterateTagConverter              : 文件testInput中<iterate>标签使用了removeFirstPrepend属性，请检查转换后代码是否可以正确执行
+2022-11-09 16:13:05  WARN c.g.i.c.IterateTagConverter              : 文件testInput中存在<iterate>标签中数组通过下标访问的情况，请检查转换后代码是否可以正确执行
+2022-11-09 16:13:05  WARN c.g.i.c.ResultMapTagConverter            : 文件testInput中ResultMap包含groupBy属性，iBatis中groupBy属性有去重作用，Mybatis id标签无此特性，请检查是否存在问题
+2022-11-09 16:13:05  WARN c.g.i.c.IsNotEmptyTagConverter           : 文件testInput中isNotEmpty标签没有property属性，请检查语句是否合法
+2022-11-09 16:13:05  WARN g.i.c.IsNotPropertyAvailableTagConverter : 文件testInput中isNotPropertyAvailable标签没有property属性，请检查语句是否合法
+2022-11-09 16:13:05  WARN c.g.i.c.IsLessEqualTagConverter          : 文件testInput中isLessEqual标签没有property属性，请检查语句是否合法
+2022-11-09 16:13:05  WARN c.g.i.c.IsLessEqualTagConverter          : 文件testInput中isLessEqual标签中compareValue、compareProperty属性均不存在，请检查语句是否合法
+2022-11-09 16:13:05  WARN c.g.i.c.ResultTagConverter               : 文件testInput中resultMap标签的groupBy字段无法找到对应的result节点
+2022-11-09 16:13:05  WARN c.g.i.c.ResultTagConverter               : 文件testInput中resultMap标签中存在groupBy属性包含多个字段的情况，暂不支持转换请人工处理
+2022-11-09 16:13:05  WARN c.g.i.c.ResultMapTagConverter            : 文件testInput中ResultMap包含groupBy属性，iBatis中groupBy属性有去重作用，Mybatis id标签无此特性，请检查是否存在问题
+2022-11-09 16:13:05  WARN c.g.i.c.IsNotEqualTagConverter           : 文件testInput中isNotEqual标签没有property属性，请检查语句是否合法

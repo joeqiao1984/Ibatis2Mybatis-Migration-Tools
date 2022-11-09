@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="com.test">
+    <select id="find" resultMap="findResult" parameterClass="long">
+        SELECT
+            id,
+            name
+        FROM
+            testTable
+        WHERE
+        <dynamic prepend="and">
+            <!--注意！！以下写法为防止两字段类型不同时比较失败，请根据实际情况进行调整-->
+            <if test="id.toString().equals(name.toString())"><![CDATA[and (]]>id=#id#<![CDATA[)]]></if>
+        </dynamic>
+    </select>
+</sqlMap>

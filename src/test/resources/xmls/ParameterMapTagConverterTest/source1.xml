@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="com.test">
+    <parameterMap id="funcParamMap" class="java.util.HashMap">
+        <parameter property="seq" jdbcType="VARCHAR" javaType="java.lang.String" mode="OUT" />
+        <parameter property="param1" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN" />
+    </parameterMap>
+</sqlMap>

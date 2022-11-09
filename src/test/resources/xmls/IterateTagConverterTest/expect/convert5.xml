@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="com.test">
+    <insert id="insertAll" parameterClass="java.util.List">
+        insert all
+        <foreach collection="list" item="item" separator="">
+            into test_user (id,name,age,category)
+            values (#item.id#,#item.name#,#item.age#,#item.category#)
+        </foreach>
+        select * from dual
+    </insert>
+</sqlMap>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<sqlMap namespace="com.test">
+    <resultMap class="HashMap" id="findResult">
+
+
+        <trim test="1234">
+            <result column="id" javaType="int" property="id"/>
+            <result column="name" javaType="String" property="name"/>
+        </trim>
+    </resultMap>
+    <select id="find" parameterClass="long" resultMap="findResult">
+        SELECT
+            id,
+            name
+        FROM
+            testTable
+        WHERE
+            id = #id#
+    </select>
+</sqlMap>

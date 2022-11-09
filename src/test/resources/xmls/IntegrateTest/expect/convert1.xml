@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Test">
+    <!--
+	警告！！typeAlias节点请集中在MyBatis配置文件中配置
+	<typeAlias alias="userPo" type="com.test.demo.po.TestUserPo"/>
+-->
+    <!--
+	警告！！typeAlias节点请集中在MyBatis配置文件中配置
+	<typeAlias alias="orderPo" type="com.test.demo.po.TestOrderPo"/>
+-->
+    <!--
+	警告！！typeAlias节点请集中在MyBatis配置文件中配置
+	<typeAlias alias="prodPo" type="com.test.demo.po.TestOrderProductPo"/>
+-->
+
+    <resultMap autoMapping="false" id="baseUserMap" type="com.test.demo.po.TestUserPo">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="age" property="age"/>
+    </resultMap>
+
+    <resultMap autoMapping="false" id="orderMap" type="com.test.demo.po.TestOrderPo">
+        <result column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="order_name" property="orderName"/>
+        <result column="order_time" property="orderTime"/>
+    </resultMap>
+
+
+    <resultMap autoMapping="false" id="orderMap1" type="com.test.demo.po.TestOrderPo">
+        <result column="order_id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="order_name" property="orderName"/>
+        <result column="order_time" property="orderTime"/>
+    </resultMap>
+
+    <resultMap autoMapping="false" id="selectUserMap1" type="com.test.demo.po.TestUserPo">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="age" property="age"/>
+
+        <result column="category" property="category"/>
+        <collection column="id" property="orderList" select="Test.selectOrderByUserId"/>
+    </resultMap>
+
+    <resultMap autoMapping="false" id="selectUserMap2" type="com.test.demo.po.TestUserPo">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="age" property="age"/>
+        <result column="category" property="category"/>
+
+        <collection column="id" property="orderList" select="Test.selectOrderByUserId"/>
+    </resultMap>
+
+    <resultMap autoMapping="false" extends="baseUserMap" id="extUserMap1" type="com.test.demo.po.TestUserPo">
+        <result column="category" property="category"/>
+    </resultMap>
+
+    <resultMap autoMapping="false" id="mapUserMap1" type="com.test.demo.po.TestUserPo">
+        <id column="id" property="id"/>
+
+        <result column="name" property="name"/>
+        <result column="age" property="age"/>
+        <result column="category" property="category"/>
+
+        <collection property="orderList" resultMap="Test.orderMap1"/>
+    </resultMap>
+
+    <!--警告！！此ResultMap包含groupBy属性，iBatis中groupBy属性有去重作用，Mybatis id标签无此特性，请检查是否存在问题--><resultMap autoMapping="false" id="baseUserMap1" type="com.test.demo.po.TestUserPo">
+    <id column="id" property="id"/>
+
+    <result column="name" property="name"/>
+    <result column="age" property="age"/>
+</resultMap>
+
+    <sql id="simpleNest">
+        <trim prefix="and">
+            <if test="_parameter != null and _parameter.containsKey('name')">
+                <if test="_parameter != null"><![CDATA[name = #{name}]]></if>
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="complexNest">
+        <trim prefix="where">
+            1=1
+            <if test="name != null and !(@java.lang.String@valueOf(name).equals(''))">
+                and name like '%' || #{name} || '%'
+            </if>
+            <if test="age != null and !(@java.lang.String@valueOf(age).equals(''))">
+                and age = #{age}
+            </if>
+            <if test="category != null and !(@java.lang.String@valueOf(category).equals(''))">
+                and category = #{category}
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="iterateNest">
+        <trim prefixOverrides="AND|OR">
+            <foreach collection="conditionList" item="conditionListItem" open="where" separator="or">
+                <if test="conditionListItem.valid.toString() == 'true'.toString()">
+                    (
+                    <foreach collection="conditionListItem.criteriaWithoutValue" item="criteriaWithoutValueItem" open="and" separator="and">
+                        ${criteriaWithoutValueItem}
+                    </foreach>
+                    <foreach collection="conditionListItem.criteriaWithSingleValue" item="criteriaWithSingleValueItem" open="and" separator="and">
+                        ${criteriaWithSingleValueItem.condition}
+                    #{criteriaWithSingleValueItem.value}
+                    </foreach>
+                    <foreach collection="conditionListItem.criteriaWithListValue" item="criteriaWithListValueItem" open="and" separator="and">
+                        ${criteriaWithListValueItem.condition}
+                        <foreach close=")" collection="criteriaWithListValueItem.values" item="valuesItem" open="(" separator=",">
+                            #{valuesItem}
+                        </foreach>
+                    </foreach>
+                    <foreach collection="conditionListItem.criteriaWithBetweenValue" item="criteriaWithBetweenValueItem" open="and" separator="and">
+                        ${criteriaWithBetweenValueItem.condition}
+                    #{criteriaWithBetweenValueItem.values[0]} and
+                    #{criteriaWithBetweenValueItem.values[1]}
+                    </foreach>
+                    )
+                </if>
+            </foreach>
+        </trim>
+    </sql>
+
+    <select id="selectOrderByUserId" parameterType="java.lang.Integer" resultMap="orderMap">
+        select * from test_order
+        where user_id = #{userId}
+    </select>
+
+    <select id="selectWithSimpleNest" parameterType="java.util.HashMap" resultMap="baseUserMap">
+        <![CDATA[select * from test_user where]]>
+        1=1
+        <include refid="simpleNest"/>
+    </select>
+
+    <select id="selectWithComplexNest" parameterType="java.util.HashMap" resultMap="baseUserMap">
+        <![CDATA[select * from test_user]]>
+        <include refid="complexNest"/>
+    </select>
+
+    <select id="selectWithSimpleNestExt" resultMap="extUserMap1">
+        <![CDATA[select * from test_user]]>
+    </select>
+
+    <select id="selectMap1" resultMap="selectUserMap1">
+        <![CDATA[select * from test_user]]>
+    </select>
+
+    <select id="selectMap2" resultMap="selectUserMap2">
+        <![CDATA[select * from test_user]]>
+    </select>
+
+    <select id="selectMap3" resultMap="mapUserMap1">
+        <![CDATA[select
+        u.id,u.name,u.age,u.CATEGORY,o.id as order_id, o.USER_ID, o.ORDER_NAME,o.ORDER_TIME
+        from test_user u left join TEST_ORDER o on u.id = o.user_id]]>
+    </select>
+
+    <select id="selectWithIterateNest" parameterType="com.test.demo.bo.QueryMultiConditionBo" resultMap="baseUserMap">
+        <![CDATA[select * from test_user]]>
+        <include refid="iterateNest"/>
+        order by ${orderClause}
+    </select>
+
+    <select id="selectWithInnerIterate" parameterType="com.test.demo.bo.QueryCategoryBo" resultMap="baseUserMap">
+        select
+        *
+        from test_user
+        where id = 1
+        and name = 'user1'
+        <trim>
+            <foreach close=")" collection="categoryList" item="categoryListItem" open="and category in  (" separator=",">
+                (#{categoryListItem.value})
+            </foreach>
+        </trim>
+    </select>
+
+    <select id="selectComplex" parameterType="java.util.HashMap" resultMap="baseUserMap">
+
+        SELECT  * from test_user where 1=1
+        <trim>
+            <![CDATA[ AND id <> 100 ]]>
+            <if test="age != null and !(@java.lang.String@valueOf(age).equals(''))"><![CDATA[ AND ]]>
+                age = #{age}
+            </if>
+            <if test="andtag != null and !(@java.lang.String@valueOf(andtag).equals(''))">
+                <if test="innerList != null and !(@java.lang.String@valueOf(innerList).equals(''))"><![CDATA[ AND ]]>
+                    <foreach collection="innerList" item="innerListItem1" separator=" AND  ">
+                        1=1
+                        <if test="innerListItem1.id != null and !(@java.lang.String@valueOf(innerListItem1.id).equals(''))"><![CDATA[ AND ]]>
+                            id  = #{innerListItem1.id}
+                        </if>
+                        <if test="innerListItem1.category != null and !(@java.lang.String@valueOf(innerListItem1.category).equals(''))"><![CDATA[ AND ]]>
+                            category LIKE  #{innerListItem1.category}||'%'
+                        </if>
+                    </foreach>
+                </if>
+            </if>
+            <if test="ortag != null and !(@java.lang.String@valueOf(ortag).equals(''))">
+                <if test="innerList != null and !(@java.lang.String@valueOf(innerList).equals(''))">
+                    <foreach close=")" collection="innerList" item="innerListItem1" open="AND (" separator=" OR ">
+                        (
+                        ( 1=1
+                        <if test="innerListItem1.id != null and !(@java.lang.String@valueOf(innerListItem1.id).equals(''))"><![CDATA[ AND ]]>
+                            ID  = #{innerListItem1.id}
+                        </if>
+                        <if test="innerListItem1.category != null and !(@java.lang.String@valueOf(innerListItem1.category).equals(''))"><![CDATA[ AND ]]>
+                            category LIKE  #{innerListItem1.category}||'%'
+                        </if>
+                        )
+                        )
+                    </foreach>
+                </if>
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectSimpleCombo" parameterType="com.test.demo.po.TestUserPo" resultType="java.lang.Integer">
+        SELECT
+        count(*)
+        from test_user
+        where 1=1
+        <trim>
+            <if test="id != null and !(@java.lang.String@valueOf(id).equals(''))">
+                and id=#{id}
+            </if>
+            <if test="age != null and !(@java.lang.String@valueOf(age).equals(''))">
+                and age=#{age}
+            </if>
+            <if test="name != null and !(@java.lang.String@valueOf(name).equals(''))">
+                AND name=#{name}
+            </if>
+            <if test="category != null and !(@java.lang.String@valueOf(category).equals(''))">
+                and category=#{category}
+            </if>
+        </trim>
+        and id = #{id}
+    </select>
+
+    <select id="selectRemap" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT
+        <foreach collection="columnList" item="columnListItem" separator=",">
+            W.${columnListItem}
+        </foreach>
+        FROM
+        ${tableName} W
+        WHERE W.ID= #{id} AND W.name= #{name} AND W.age=#{age}
+    </select>
+
+    <select id="selectIterateCondition" parameterType="com.test.demo.bo.SelectIterateConditionQueryBo" resultMap="baseUserMap">
+        SELECT
+        *
+        FROM
+        TEST_USER
+        WHERE
+        1=1
+        and
+        2=2
+        <trim>
+            <if test="inList != null and !(@java.lang.String@valueOf(inList).equals(''))">
+                <foreach close=")" collection="inList" item="inListItem" open="AND (" separator=" OR ">
+                    CATEGORY = #{inListItem.value}
+                </foreach>
+            </if>
+        </trim>
+        AND 1=1
+    </select>
+
+    <select id="selectTypeTest" parameterType="java.util.Map" resultMap="baseUserMap">
+        select * from test_user
+        <trim prefix="where" prefixOverrides="or">
+            <if test="arg1.toString() == 'true'.toString()"><![CDATA[ or ]]>
+                id=1
+            </if>
+            <if test="arg2.toString() == '100'.toString()"><![CDATA[ or ]]>
+                id=2
+            </if>
+            <if test="arg3.toString() == '1'.toString()"><![CDATA[ or ]]>
+                id=3
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectMapTest" parameterType="java.util.Map" resultMap="orderMap">
+        select * from test_order
+        <trim prefix="where" prefixOverrides="or">
+            <if test="arg1 == null or @java.lang.String@valueOf(arg1).equals('')"><![CDATA[ or ]]>
+                id=1
+            </if>
+            <if test="arg2 != null and !(@java.lang.String@valueOf(arg2).equals(''))"><![CDATA[ or ]]>
+                id=2
+            </if>
+            <if test="arg3.toString() == '1'.toString()"><![CDATA[ or ]]>
+                id=3
+            </if>
+            <if test="arg4.toString() != '1'.toString()"><![CDATA[ or ]]>
+                id=4
+            </if>
+            <if test="arg5 == null"><![CDATA[ or ]]>
+                id=5
+            </if>
+            <if test="arg6 != null"><![CDATA[ or ]]>
+                id=6
+            </if>
+            <if test="_parameter != null and _parameter.containsKey('arg7')"><![CDATA[ or ]]>
+                id=7
+            </if>
+            <if test="!_parameter.containsKey('arg8')"><![CDATA[ or ]]>
+                id=8
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectListTest" parameterType="java.util.List" resultMap="baseUserMap">
+        select *
+        from test_user
+        where id in
+        <foreach close=")" collection="list" item="item" open="(" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectRemoveFirstPrepend" parameterType="com.test.demo.po.TestUserPo" resultMap="baseUserMap">
+        select *
+        from test_user
+
+        <if test="id != null">
+            where (id =
+            <trim prefixOverrides="AND|OR">
+                <if test="id != null">
+                    <if test="name != null"><![CDATA[ and ]]>
+                        #{id}
+                    </if>
+                </if>
+            </trim>
+            )
+        </if>
+    </select>
+
+    <select id="selectNestArray" parameterType="java.util.Map" resultMap="baseUserMap">
+        select * from test_user where id=1
+        <foreach close=")" collection="list" item="listItem" open="and (" separator="and">
+            id between #{listItem.values[0]} and #{listItem.values[1]}
+        </foreach>
+    </select>
+
+    <insert id="insertSimple" parameterType="com.test.demo.po.TestUserPo">
+        insert into test_user(
+        id
+        <trim>
+            <if test="name != null and !(@java.lang.String@valueOf(name).equals(''))"><![CDATA[ ,  ]]>name</if>
+            <if test="age != null and !(@java.lang.String@valueOf(age).equals(''))"><![CDATA[ ,  ]]>age</if>
+            <if test="category != null and !(@java.lang.String@valueOf(category).equals(''))"><![CDATA[ ,  ]]>category</if>
+        </trim>
+        ) values (
+        #{id}
+        <trim>
+            <if test="name != null and !(@java.lang.String@valueOf(name).equals(''))"><![CDATA[ ,  ]]>#{name}</if>
+            <if test="age != null and !(@java.lang.String@valueOf(age).equals(''))"><![CDATA[ ,  ]]>#{age}</if>
+            <if test="category != null and !(@java.lang.String@valueOf(category).equals(''))"><![CDATA[ ,  ]]>#{category}</if>
+        </trim>
+        )
+    </insert>
+
+    <insert id="insertAll" parameterType="java.util.List">
+        insert all
+        <foreach collection="list" item="item" separator="">
+            into test_user (id,name,age,category)
+            values (#{item.id},#{item.name},#{item.age},#{item.category})
+        </foreach>
+        select * from dual
+    </insert>
+
+
+    <update id="comboStat" parameterType="map">
+        BEGIN
+        insert into Test_USER_temp (
+        id,name,age,category ) select
+        id,name,age,#{category}
+        from
+        test_user
+        where
+        id = #{id}
+        AND
+        age
+        =#{age};
+        <if test="del.toString() == 'true'.toString()">
+            delete
+            test_user where id = #{id} AND
+            age =#{age};
+        </if>
+        END;
+    </update>
+
+    <update id="update" parameterType="com.test.demo.po.TestUserPo">
+        <![CDATA[ update test_user set
+			name = #{name}
+			]]>
+        <trim>
+            <if test="age != null"><![CDATA[, age = #{age}]]></if>
+        </trim>
+        <![CDATA[
+                where id = #{id}
+		]]>
+    </update>
+
+    <delete id="delete" parameterType="java.util.HashMap">
+        <![CDATA[
+			delete from test_user
+		]]>
+        <include refid="complexNest"/>
+    </delete>
+
+</mapper>

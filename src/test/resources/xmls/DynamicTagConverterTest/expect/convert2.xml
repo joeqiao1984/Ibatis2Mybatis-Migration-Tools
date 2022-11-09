@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="com.test">
+    <resultMap id="findResult" class="HashMap">
+        <result property="id" column="id" javaType="int" />
+        <result property="name" column="name" javaType="String" />
+    </resultMap>
+    <select id="find" resultMap="findResult" parameterClass="long">
+        select * from demo where 1=1
+        <trim prefix="and (" suffix=")">
+            <isNotEmpty property="id">
+                id = #id#
+            </isNotEmpty>
+        </trim>
+    </select>
+</sqlMap>

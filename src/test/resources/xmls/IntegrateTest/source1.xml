@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="Test">
+    <typeAlias alias="userPo" type="com.test.demo.po.TestUserPo"/>
+    <typeAlias alias="orderPo" type="com.test.demo.po.TestOrderPo"/>
+    <typeAlias alias="prodPo" type="com.test.demo.po.TestOrderProductPo"/>
+
+    <resultMap id="baseUserMap" class="com.test.demo.po.TestUserPo">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="age" column="age"/>
+    </resultMap>
+
+    <resultMap id="orderMap" class="com.test.demo.po.TestOrderPo">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="orderName" column="order_name"/>
+        <result property="orderTime" column="order_time"/>
+    </resultMap>
+
+
+    <resultMap id="orderMap1" class="com.test.demo.po.TestOrderPo">
+        <result property="id" column="order_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="orderName" column="order_name"/>
+        <result property="orderTime" column="order_time"/>
+    </resultMap>
+
+    <resultMap id="selectUserMap1" class="com.test.demo.po.TestUserPo">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="age" column="age"/>
+        <result property="orderList" column="id" select="Test.selectOrderByUserId"/>
+        <result property="category" column="category"/>
+    </resultMap>
+
+    <resultMap id="selectUserMap2" class="com.test.demo.po.TestUserPo">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="age" column="age"/>
+        <result property="category" column="category"/>
+        <result property="orderList" column="id" select="Test.selectOrderByUserId"/>
+    </resultMap>
+
+    <resultMap id="extUserMap1" class="com.test.demo.po.TestUserPo" extends="baseUserMap">
+        <result property="category" column="category"/>
+    </resultMap>
+
+    <resultMap id="mapUserMap1" class="com.test.demo.po.TestUserPo" groupBy="id">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="age" column="age"/>
+        <result property="category" column="category"/>
+        <result property="orderList" resultMap="Test.orderMap1"/>
+    </resultMap>
+
+    <resultMap id="baseUserMap1" class="com.test.demo.po.TestUserPo" groupBy="id">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="age" column="age"/>
+    </resultMap>
+
+    <sql id="simpleNest">
+        <dynamic prepend="and">
+            <isPropertyAvailable property="name">
+                <isNotNull><![CDATA[name = #name#]]></isNotNull>
+            </isPropertyAvailable>
+        </dynamic>
+    </sql>
+
+    <sql id="complexNest">
+        <dynamic prepend="where">
+            1=1
+            <isNotEmpty property="name">
+                and name like '%' || #name# || '%'
+            </isNotEmpty>
+            <isNotEmpty property="age">
+                and age = #age#
+            </isNotEmpty>
+            <isNotEmpty property="category">
+                and category = #category#
+            </isNotEmpty>
+        </dynamic>
+    </sql>
+
+    <sql id="iterateNest">
+        <iterate conjunction="or" prepend="where" property="conditionList" removeFirstPrepend="true">
+            <isEqual compareValue="true" property="conditionList[].valid">
+                (
+                <iterate conjunction="and" prepend="and" property="conditionList[].criteriaWithoutValue">
+                    $conditionList[].criteriaWithoutValue[]$
+                </iterate>
+                <iterate conjunction="and" prepend="and" property="conditionList[].criteriaWithSingleValue">
+                    $conditionList[].criteriaWithSingleValue[].condition$
+                    #conditionList[].criteriaWithSingleValue[].value#
+                </iterate>
+                <iterate conjunction="and" prepend="and" property="conditionList[].criteriaWithListValue">
+                    $conditionList[].criteriaWithListValue[].condition$
+                    <iterate close=")" conjunction="," open="(" property="conditionList[].criteriaWithListValue[].values">
+                        #conditionList[].criteriaWithListValue[].values[]#
+                    </iterate>
+                </iterate>
+                <iterate conjunction="and" prepend="and" property="conditionList[].criteriaWithBetweenValue">
+                    $conditionList[].criteriaWithBetweenValue[].condition$
+                    #conditionList[].criteriaWithBetweenValue[].values[0]# and
+                    #conditionList[].criteriaWithBetweenValue[].values[1]#
+                </iterate>
+                )
+            </isEqual>
+        </iterate>
+    </sql>
+
+    <select id="selectOrderByUserId" parameterClass="java.lang.Integer" resultMap="orderMap">
+        select * from test_order
+        where user_id = #userId#
+    </select>
+
+    <select id="selectWithSimpleNest" parameterClass="java.util.HashMap" resultMap="baseUserMap">
+        <![CDATA[select * from test_user where]]>
+        1=1
+        <include refid="simpleNest"/>
+    </select>
+
+    <select id="selectWithComplexNest" parameterClass="java.util.HashMap" resultMap="baseUserMap">
+        <![CDATA[select * from test_user]]>
+        <include refid="complexNest"/>
+    </select>
+
+    <select id="selectWithSimpleNestExt" resultMap="extUserMap1">
+        <![CDATA[select * from test_user]]>
+    </select>
+
+    <select id="selectMap1" resultMap="selectUserMap1">
+        <![CDATA[select * from test_user]]>
+    </select>
+
+    <select id="selectMap2" resultMap="selectUserMap2">
+        <![CDATA[select * from test_user]]>
+    </select>
+
+    <select id="selectMap3" resultMap="mapUserMap1">
+        <![CDATA[select
+        u.id,u.name,u.age,u.CATEGORY,o.id as order_id, o.USER_ID, o.ORDER_NAME,o.ORDER_TIME
+        from test_user u left join TEST_ORDER o on u.id = o.user_id]]>
+    </select>
+
+    <select id="selectWithIterateNest" parameterClass="com.test.demo.bo.QueryMultiConditionBo" resultMap="baseUserMap">
+        <![CDATA[select * from test_user]]>
+        <include refid="iterateNest"/>
+        order by $orderClause$
+    </select>
+
+    <select id="selectWithInnerIterate" parameterClass="com.test.demo.bo.QueryCategoryBo" resultMap="baseUserMap">
+        select
+        *
+        from test_user
+        where id = 1
+        and name = 'user1'
+        <dynamic>
+            <iterate property="categoryList" prepend="and category in " open="(" close=")" conjunction=",">
+                (#categoryList[].value#)
+            </iterate>
+        </dynamic>
+    </select>
+
+    <select id="selectComplex" parameterClass="java.util.HashMap"  resultMap="baseUserMap">
+
+        SELECT  * from test_user where 1=1
+        <dynamic>
+            <![CDATA[ AND id <> 100 ]]>
+            <isNotEmpty property="age" prepend="AND">
+                age = #age#
+            </isNotEmpty>
+            <isNotEmpty property="andtag">
+                <isNotEmpty property="innerList"  prepend="AND">
+                    <iterate  property="innerList" conjunction=" AND  ">
+                        1=1
+                        <isNotEmpty  prepend="AND" property="innerList[].id">
+                            id  = #innerList[].id#
+                        </isNotEmpty>
+                        <isNotEmpty  prepend="AND" property="innerList[].category">
+                            category LIKE  #innerList[].category#||'%'
+                        </isNotEmpty>
+                    </iterate>
+                </isNotEmpty>
+            </isNotEmpty>
+            <isNotEmpty property="ortag">
+                <isNotEmpty property="innerList">
+                    <iterate prepend="AND" open="(" close=")" property="innerList" conjunction=" OR ">
+                        (
+                        ( 1=1
+                        <isNotEmpty  prepend="AND" property="innerList[].id">
+                            ID  = #innerList[].id#
+                        </isNotEmpty>
+                        <isNotEmpty  prepend="AND" property="innerList[].category">
+                            category LIKE  #innerList[].category#||'%'
+                        </isNotEmpty>
+                        )
+                        )
+                    </iterate>
+                </isNotEmpty>
+            </isNotEmpty>
+        </dynamic>
+    </select>
+
+    <select id="selectSimpleCombo" parameterClass="com.test.demo.po.TestUserPo" resultClass="java.lang.Integer">
+        SELECT
+        count(*)
+        from test_user
+        where 1=1
+        <dynamic>
+            <isNotEmpty property="id">
+                and id=#id#
+            </isNotEmpty>
+            <isNotEmpty property="age">
+                and age=#age#
+            </isNotEmpty>
+            <isNotEmpty property="name">
+                AND name=#name#
+            </isNotEmpty>
+            <isNotEmpty property="category">
+                and category=#category#
+            </isNotEmpty>
+        </dynamic>
+        and id = #id#
+    </select>
+
+    <select id="selectRemap" parameterClass="java.util.HashMap"  resultClass="java.util.HashMap" remapResults="true">
+        SELECT
+        <iterate property="columnList" conjunction=",">
+            W.$columnList[]$
+        </iterate>
+        FROM
+        $tableName$ W
+        WHERE W.ID= #id# AND W.name= #name# AND W.age=#age#
+    </select>
+
+    <select id="selectIterateCondition"  parameterClass="com.test.demo.bo.SelectIterateConditionQueryBo"  resultMap="baseUserMap">
+        SELECT
+        *
+        FROM
+        TEST_USER
+        WHERE
+        1=1
+        and
+        2=2
+        <dynamic>
+            <isNotEmpty property="inList">
+                <iterate prepend="AND" open="(" close=")" property="inList" conjunction=" OR ">
+                    CATEGORY = #inList[].value#
+                </iterate>
+            </isNotEmpty>
+        </dynamic>
+        AND 1=1
+    </select>
+
+    <select id="selectTypeTest" parameterClass="java.util.Map" resultMap="baseUserMap">
+        select * from test_user
+        <dynamic prepend="where">
+            <isEqual property="arg1" compareValue="true" prepend="or">
+                id=1
+            </isEqual>
+            <isEqual property="arg2" compareValue="100" prepend="or">
+                id=2
+            </isEqual>
+            <isEqual property="arg3" compareValue="1" prepend="or">
+                id=3
+            </isEqual>
+        </dynamic>
+    </select>
+
+    <select id="selectMapTest" parameterClass="java.util.Map" resultMap="orderMap">
+        select * from test_order
+        <dynamic prepend="where">
+            <isEmpty property="arg1" prepend="or">
+                id=1
+            </isEmpty>
+            <isNotEmpty property="arg2" prepend="or">
+                id=2
+            </isNotEmpty>
+            <isEqual property="arg3" compareValue="1" prepend="or">
+                id=3
+            </isEqual>
+            <isNotEqual property="arg4" compareValue="1" prepend="or">
+                id=4
+            </isNotEqual>
+            <isNull property="arg5" prepend="or">
+                id=5
+            </isNull>
+            <isNotNull property="arg6" prepend="or">
+                id=6
+            </isNotNull>
+            <isPropertyAvailable property="arg7" prepend="or">
+                id=7
+            </isPropertyAvailable>
+            <isNotPropertyAvailable property="arg8" prepend="or">
+                id=8
+            </isNotPropertyAvailable>
+        </dynamic>
+    </select>
+
+    <select id="selectListTest" parameterClass="java.util.List" resultMap="baseUserMap">
+        select *
+        from test_user
+        where id in
+        <iterate conjunction="," open="(" close=")">
+            #inList[]#
+        </iterate>
+    </select>
+
+    <select id="selectRemoveFirstPrepend" parameterClass="com.test.demo.po.TestUserPo" resultMap="baseUserMap">
+        select *
+        from test_user
+
+        <isNotNull property="id" removeFirstPrepend="true">
+            where (id =
+            <isNotNull property="id">
+                <isNotNull property="name" prepend="and">
+                    #id#
+                </isNotNull>
+            </isNotNull>
+            )
+        </isNotNull>
+    </select>
+
+    <select id="selectNestArray" parameterClass="java.util.Map" resultMap="baseUserMap">
+        select * from test_user where id=1
+        <iterate property="list" prepend="and" conjunction="and" open="(" close=")">
+            id between #list[].values[0]# and #list[].values[1]#
+        </iterate>
+    </select>
+
+    <insert id="insertSimple" parameterClass="com.test.demo.po.TestUserPo">
+        insert into test_user(
+        id
+        <dynamic>
+            <isNotEmpty   prepend= ", "   property= "name">name</isNotEmpty>
+            <isNotEmpty   prepend= ", "   property= "age">age</isNotEmpty>
+            <isNotEmpty   prepend= ", "   property= "category">category</isNotEmpty>
+        </dynamic>
+        ) values (
+        #id:id#
+        <dynamic>
+            <isNotEmpty   prepend= ", "   property= "name">#name#</isNotEmpty>
+            <isNotEmpty   prepend= ", "   property= "age">#age#</isNotEmpty>
+            <isNotEmpty   prepend= ", "   property= "category">#category#</isNotEmpty>
+        </dynamic>
+        )
+    </insert>
+
+    <insert id="insertAll" parameterClass="java.util.List">
+        insert all
+        <iterate conjunction="">
+            into test_user (id,name,age,category)
+            values (#[].id#,#[].name#,#[].age#,#[].category#)
+        </iterate>
+        select * from dual
+    </insert>
+
+
+    <statement id="comboStat" parameterClass="map">
+        BEGIN
+        insert into Test_USER_temp (
+        id,name,age,category ) select
+        id,name,age,#category#
+        from
+        test_user
+        where
+        id = #id#
+        AND
+        age
+        =#age#;
+        <isEqual property="del" compareValue="true">
+            delete
+            test_user where id = #id# AND
+            age =#age#;
+        </isEqual>
+        END;
+    </statement>
+
+    <update id="update" parameterClass="com.test.demo.po.TestUserPo">
+        <![CDATA[ update test_user set
+			name = #name:name#
+			]]>
+        <dynamic>
+            <isNotNull property="age" prepend=","><![CDATA[age = #age#]]></isNotNull>
+        </dynamic>
+        <![CDATA[
+                where id = #id#
+		]]>
+    </update>
+
+    <delete id="delete" parameterClass="java.util.HashMap">
+        <![CDATA[
+			delete from test_user
+		]]>
+        <include refid="complexNest" />
+    </delete>
+
+</sqlMap>

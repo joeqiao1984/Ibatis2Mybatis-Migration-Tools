@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<sqlMap namespace="com.test">
+    <select id="queryComplex" parameterClass="com.test.demo.bo.ComplexBo" resultMap="DemoMap">
+        select Id, Name, Age from demo
+        <dynamic prepend="where">
+            <trim prefixOverrides="AND|OR">
+                <foreach collection="conditionList" item="conditionListItem" open="and" separator="and">
+                    <isEqual compareValue="true" property="conditionListItem.valid">
+                        $conditionListItem.value$
+                    </isEqual>
+                </foreach>
+            </trim>
+        </dynamic>
+    </select>
+</sqlMap>
+

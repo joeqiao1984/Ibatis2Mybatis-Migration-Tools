@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<sqlMap namespace="com.test">
+    <resultMap class="com.test.data.vdo.InsInfoVdo" id="InsInfoVdo">
+        <result column="ins_id" property="insid"/>
+        <result column="INS_CHN_FULLNM" property="insChnFullnm"/>
+
+
+
+        <result column="INS_CHN_SHRTNM" property="insChnShrtnm"/>
+        <result column="INS_ENG_FULLNM" property="insEngFullnm"/>
+        <collection column="{pstRlId=pstRlId,pstBlngInsid=insid}" property="p1" select="s1"/>
+        <collection column="{pstRlId=pstRlId,pstBlngInsid=insid}" property="p2" select="s2"/>
+        <collection column="{pstRlId=pstRlId,pstBlngInsid=insid}" property="p3" select="s3"/>
+    </resultMap>
+    <select id="find" parameterClass="long" resultMap="findResult">
+        SELECT
+            id,
+            name
+        FROM
+            testTable
+        WHERE
+        <dynamic prepend="and">
+            <isNull>
+                id=#id#
+            </isNull>
+            <isNotEmpty property="name">
+                and name=#name#
+            </isNotEmpty>
+            <isNotEmpty property="age">
+                and age=#age#
+            </isNotEmpty>
+        </dynamic>
+    </select>
+</sqlMap>

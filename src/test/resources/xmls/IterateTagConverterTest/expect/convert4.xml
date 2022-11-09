@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<sqlMap namespace="com.test">
+    <sql id="abatorgenerated_Example_Where_Clause">
+        <trim prefixOverrides="AND|OR">
+            <foreach collection="oredCriteria" item="oredCriteriaItem" open="where" separator="or">
+                <isEqual compareValue="true" property="oredCriteriaItem.valid">
+                    (
+                    <foreach collection="oredCriteriaItem.criteriaWithoutValue" item="criteriaWithoutValueItem" open="and" separator="and">
+                        $criteriaWithoutValueItem$
+                    </foreach>
+                    <foreach collection="oredCriteriaItem.criteriaWithSingleValue" item="criteriaWithSingleValueItem" open="and" separator="and">
+                        $criteriaWithSingleValueItem.condition$
+                    #criteriaWithSingleValueItem.value#
+                    </foreach>
+                    <foreach collection="oredCriteriaItem.criteriaWithListValue" item="criteriaWithListValueItem" open="and" separator="and">
+                        $criteriaWithListValueItem.condition$
+                        <foreach close=")" collection="criteriaWithListValueItem.values" item="valuesItem" open="(" separator=",">
+                            #valuesItem#
+                        </foreach>
+                    </foreach>
+                    <foreach collection="oredCriteriaItem.criteriaWithBetweenValue" item="criteriaWithBetweenValueItem" open="and" separator="and">
+                        $criteriaWithBetweenValueItem.condition$
+                    #criteriaWithBetweenValueItem.values[0]# and
+                    $criteriaWithBetweenValueItem.values[1]$
+                    </foreach>
+                    )
+                </isEqual>
+            </foreach>
+        </trim>
+    </sql>
+</sqlMap>

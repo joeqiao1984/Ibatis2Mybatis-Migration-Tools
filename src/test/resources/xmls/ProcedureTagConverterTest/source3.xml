@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="com.test">
+    <procedure id="P_A0861n002" parameterClass="java.util.Map" remapResults="true">
+        { call P_A0861n002(#empeAplformId#,#crtPsnId#,#aplyPsnId#,#VLD#,#INSERT#,#currentDtTm#) }
+    </procedure>
+</sqlMap>
