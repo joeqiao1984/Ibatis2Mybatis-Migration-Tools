@@ -38,7 +38,7 @@ This tool is used to convert iBatis sqlmap xml configuration file to Mybatis map
 ### sqlMap
 
 - **Is supported:** Yes
-- **Conversion Logic：**Convert to mapper tag
+- **Conversion Logic：** Convert to mapper tag
 
 |   属性    | Is Supported |    Description    |
 | :-------: | :---------: | :--------: |
@@ -58,7 +58,7 @@ This tool is used to convert iBatis sqlmap xml configuration file to Mybatis map
 ### parameter
 
 - **Is supported:** Yes
-- **Conversion Logic：**No change in tag, conversion attributes
+- **Conversion Logic：** No change in tag, conversion attributes
 
 |     Attribute     | Is Supported |       Description        |
 | :----------: | :---------: | :---------------: |
@@ -75,7 +75,7 @@ This tool is used to convert iBatis sqlmap xml configuration file to Mybatis map
 ### resultMap
 
 - **Is supported:** Yes
-- **Conversion Logic：**No change in tag, conversion attributes
+- **Conversion Logic：** No change in tag, conversion attributes
 - **Caution：**
   -  As mybatis will enable autoMapping by default, this logic may lead to inconsistent behavior before and after conversion. So after conversion, autoMapping is added by default to falseAttribute
   - groupBy has a de-duplication feature in ibatis, while mybatis does not have this logic, so there may be a problem when the sub-tag no select/resultMap appears. The conversion process will be warned
@@ -108,32 +108,32 @@ This tool is used to convert iBatis sqlmap xml configuration file to Mybatis map
 ### discriminator
 
 - **Is supported:** No
-- **Conversion Logic：**Manual process
+- **Conversion Logic：** Manual process
 
 ### subMap
 
 - **Is supported:** No
-- **Conversion Logic：**Manual process
+- **Conversion Logic：** Manual process
 
 ### cacheModel
 
 - **Is supported:** No
-- **Conversion Logic：**Manual process
+- **Conversion Logic：** Manual process
 
 ### flushInterval
 
 - **Is supported:** No
-- **Conversion Logic：**Manual process
+- **Conversion Logic：** Manual process
 
 ### flushOnExecute
 
 - **Is supported:** No
-- **Conversion Logic：**Manual process
+- **Conversion Logic：** Manual process
 
 ### property
 
 - **Is supported:** Yes
-- **Conversion Logic：** No Change
+- **Conversion Logic：**  No Change
 
 | Attribute  | Is Supported |    Description    |
 | :---: | :---------: | :--------: |
@@ -143,7 +143,7 @@ This tool is used to convert iBatis sqlmap xml configuration file to Mybatis map
 ### typeAlias
 
 - **Is supported:** Yes
-- **Conversion Logic：** Deleted, extracted and printed to log file
+- **Conversion Logic：**  Deleted, extracted and printed to log file
 
 | Attribute  | Is Supported |    Description    |
 | :---: | :---------: | :--------: |
@@ -153,7 +153,7 @@ This tool is used to convert iBatis sqlmap xml configuration file to Mybatis map
 ### sql
 
 - **Is supported:** Yes
-- **Conversion Logic：** No Change
+- **Conversion Logic：**  No Change
 
 | Attribute | Is Supported |    Description    |
 | :--: | :---------: | :--------: |
@@ -162,7 +162,7 @@ This tool is used to convert iBatis sqlmap xml configuration file to Mybatis map
 ### include
 
 - **Is supported:** Yes
-- **Conversion Logic：** No Change
+- **Conversion Logic：**  No Change
 
 | Attribute  | Is Supported |    Description    |
 | :---: | :---------: | :--------: |
@@ -171,7 +171,7 @@ This tool is used to convert iBatis sqlmap xml configuration file to Mybatis map
 ### statement
 
 - **Is supported:** Yes
-- **Conversion Logic：**If there is a resultClass attribute, it is converted to a select tag, otherwise it is converted to an update tag
+- **Conversion Logic：** If there is a resultClass attribute, it is converted to a select tag, otherwise it is converted to an update tag
 
 |      Attribute      | Is Supported |              Description               |
 | :------------: | :---------: | :-----------------------------: |
@@ -190,7 +190,7 @@ This tool is used to convert iBatis sqlmap xml configuration file to Mybatis map
 ### select
 
 - **Is supported:** Yes
-- **Conversion Logic：**No change in tag, conversion attributes
+- **Conversion Logic：** No change in tag, conversion attributes
 
 |      Attribute      | Is Supported |               Description               |
 | :------------: | :---------: |:---------------------------------------:|
@@ -209,7 +209,7 @@ This tool is used to convert iBatis sqlmap xml configuration file to Mybatis map
 ### insert
 
 - **Is supported:** Yes
-- **Conversion Logic：**No change in tag, conversion attributes
+- **Conversion Logic：** No change in tag, conversion attributes
 
 |      Attribute      | Is Supported |              Description               |
 | :------------: | :---------: | :-----------------------------: |
@@ -221,12 +221,12 @@ This tool is used to convert iBatis sqlmap xml configuration file to Mybatis map
 ### selectKey
 
 - **Is supported:** No
-- **Conversion Logic：**Manual process
+- **Conversion Logic：** Manual process
 
 ### update
 
 - **Is supported:** Yes
-- **Conversion Logic：**No change in tag, conversion attributes
+- **Conversion Logic：** No change in tag, conversion attributes
 
 |      Attribute      | Is Supported |              Description               |
 | :------------: | :---------: | :-----------------------------: |
@@ -238,7 +238,7 @@ This tool is used to convert iBatis sqlmap xml configuration file to Mybatis map
 ### delete
 
 - **Is supported:** Yes
-- **Conversion Logic：**No change in tag, conversion attributes
+- **Conversion Logic：** No change in tag, conversion attributes
 
 |      Attribute      | Is Supported |              Description               |
 | :------------: | :---------: | :-----------------------------: |
@@ -250,7 +250,7 @@ This tool is used to convert iBatis sqlmap xml configuration file to Mybatis map
 ### procedure
 
 - **Is supported:** Yes
-- **Conversion Logic：**Convert to update tag, add statement property to CALLABLE
+- **Conversion Logic：** Convert to update tag, add statement property to CALLABLE
 
 |      Attribute      | Is Supported |              Description               |
 | :------------: | :---------: | :-----------------------------: |
@@ -268,7 +268,7 @@ This tool is used to convert iBatis sqlmap xml configuration file to Mybatis map
 ### dynamic
 
 - **Is supported:** Yes
-- **Conversion Logic：**Convert to trim
+- **Conversion Logic：** Convert to trim
 - **Caution：**
   - The prepend attribute of all dynamic tag direct inline tags will be collected and added to the prefixOverrides attribute separated by '|'
 
@@ -281,7 +281,7 @@ This tool is used to convert iBatis sqlmap xml configuration file to Mybatis map
 ### isNotNull
 
 - **Is supported:** Yes
-- **Conversion Logic：**Convert to if
+- **Conversion Logic：** Convert to if
 - **Caution：** If the removeFirstPrepend property is present, please perform further tests
 
 |        Attribute        | Is Supported |                          Description                           |
@@ -295,7 +295,7 @@ This tool is used to convert iBatis sqlmap xml configuration file to Mybatis map
 ### isNull
 
 - **Is supported:** Yes
-- **Conversion Logic：**Convert to if
+- **Conversion Logic：** Convert to if
 - **Caution：** If the removeFirstPrepend property is present, please perform further tests
 
 |        Attribute        | Is Supported |                          Description                           |
@@ -309,7 +309,7 @@ This tool is used to convert iBatis sqlmap xml configuration file to Mybatis map
 ### isNotPropertyAvailable
 
 - **Is supported:** Yes
-- **Conversion Logic：**Convert to if
+- **Conversion Logic：** Convert to if
 - **Caution：**
   - If the removeFirstPrepend property is present, please perform further tests
   - The prerequisite for conversion is that the input parameter is of type map. If the input parameter is a normal pojo, an error will occur after conversion. Please pay attention to check
@@ -325,7 +325,7 @@ This tool is used to convert iBatis sqlmap xml configuration file to Mybatis map
 ### isPropertyAvailable
 
 - **Is supported:** Yes
-- **Conversion Logic：**Convert to if
+- **Conversion Logic：** Convert to if
 - **Caution：**
   - If the removeFirstPrepend property is present, please perform further tests
   - The prerequisite for conversion is that the input parameter is of type map. If the input parameter is a normal pojo, an error will occur after conversion. Please pay attention to check
@@ -341,7 +341,7 @@ This tool is used to convert iBatis sqlmap xml configuration file to Mybatis map
 ### isEqual
 
 - **Is supported:** Yes
-- **Conversion Logic：**Convert to if
+- **Conversion Logic：** Convert to if
 - **Caution：**
   - To prevent the char test of mybatis test from failing, test uses a toString , which can be adjusted according to the actual situation
   - If the removeFirstPrepend property is present, please perform further tests
@@ -359,7 +359,7 @@ This tool is used to convert iBatis sqlmap xml configuration file to Mybatis map
 ### isNotEqual
 
 - **Is supported:** Yes
-- **Conversion Logic：**Convert to if
+- **Conversion Logic：** Convert to if
 - **Caution：**
   - To prevent the char test of mybatis test from failing, test uses a toString , which can be adjusted according to the actual situation
   - If the removeFirstPrepend property is present, please perform further tests
@@ -377,7 +377,7 @@ This tool is used to convert iBatis sqlmap xml configuration file to Mybatis map
 ### isGreaterThan
 
 - **Is supported:** Yes
-- **Conversion Logic：**Convert to if
+- **Conversion Logic：** Convert to if
 - **Caution：**
   - If the removeFirstPrepend property is present, please perform further tests
 
@@ -394,7 +394,7 @@ This tool is used to convert iBatis sqlmap xml configuration file to Mybatis map
 ### isGreaterEqual
 
 - **Is supported:** Yes
-- **Conversion Logic：**Convert to if
+- **Conversion Logic：** Convert to if
 - **Caution：**
   - If the removeFirstPrepend property is present, please perform further tests
 
@@ -411,7 +411,7 @@ This tool is used to convert iBatis sqlmap xml configuration file to Mybatis map
 ### isLessThan
 
 - **Is supported:** Yes
-- **Conversion Logic：**Convert to if
+- **Conversion Logic：** Convert to if
 - **Caution：**
   - If the removeFirstPrepend property is present, please perform further tests
 
@@ -428,7 +428,7 @@ This tool is used to convert iBatis sqlmap xml configuration file to Mybatis map
 ### isLessEqual
 
 - **Is supported:** Yes
-- **Conversion Logic：**Convert to if
+- **Conversion Logic：** Convert to if
 - **Caution：**
   - If the removeFirstPrepend property is present, please perform further tests
 
@@ -445,7 +445,7 @@ This tool is used to convert iBatis sqlmap xml configuration file to Mybatis map
 ### isEmpty
 
 - **Is supported:** Yes
-- **Conversion Logic：**Convert to if
+- **Conversion Logic：** Convert to if
 - **Caution：**
   - will first determine whether the incoming parameter is null, and then determine whether the parameter is converted to a string and takes the value of the empty string
   - If the removeFirstPrepend property is present, please perform further tests
@@ -461,7 +461,7 @@ This tool is used to convert iBatis sqlmap xml configuration file to Mybatis map
 ### isNotEmpty
 
 - **Is supported:** Yes
-- **Conversion Logic：**Convert to if
+- **Conversion Logic：** Convert to if
 - **Caution：**
   - will first determine whether the incoming parameter is null, and then determine whether the parameter is converted to a string and takes the value of the empty string
   - If the removeFirstPrepend property is present, please perform further tests
@@ -477,7 +477,7 @@ This tool is used to convert iBatis sqlmap xml configuration file to Mybatis map
 ### isParameterPresent
 
 - **Is supported:** Yes
-- **Conversion Logic：**Convert to if
+- **Conversion Logic：** Convert to if
 - **Caution：**
   - Determine if _parameter is empty
   - If the removeFirstPrepend property is present, please perform further tests
@@ -492,7 +492,7 @@ This tool is used to convert iBatis sqlmap xml configuration file to Mybatis map
 ### isNotParameterPresent
 
 - **Is supported:** Yes
-- **Conversion Logic：**Convert to if
+- **Conversion Logic：** Convert to if
 - **Caution：**
   - Determine if _parameter is empty
   - If the removeFirstPrepend property is present, please perform further tests
@@ -507,7 +507,7 @@ This tool is used to convert iBatis sqlmap xml configuration file to Mybatis map
 ### iterate
 
 - **Is supported:** Yes
-- **Conversion Logic：**Convert to foreach
+- **Conversion Logic：** Convert to foreach
 - **Caution：**
   - This tag conversion logic is complex, if there are multiple layers of nested iterate tags, please be sure to conduct further testing
   - There may be a problem with the removeFirstPrepend conversion，If the removeFirstPrepend property is present, please perform further tests
